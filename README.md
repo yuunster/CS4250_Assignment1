@@ -1,4 +1,5 @@
 Example output: 
+
 Document-Term Matrix
    | love | cat  | dog  |
 d1 | 0.00 | 0.12 | 0.00 |
