@@ -26,7 +26,8 @@ for i, doc in enumerate(documents):
     words = doc.split()
     for word in words:
         if(word in stopWords):
-            documents[i] = documents[i].replace(word, "")
+            words.remove(word)
+    documents[i] = words
 
 #Conducting stemming. Hint: use a dictionary to map word variations to their stem.
 #--> add your Python code here
@@ -35,18 +36,16 @@ stemming = {
     "loves" : "love",
     "dogs" : "dog"
 }
-for i, doc in enumerate(documents):
-    words = doc.split()
-    for word in words:
+for doc in documents:
+    for i, word in enumerate(doc):
         if(word in stemming):
-            documents[i] = documents[i].replace(word, stemming.get(word))
+            doc[i] = stemming.get(word)
 
 #Identifying the index terms.
 #--> add your Python code here
 terms = []
 for doc in documents:
-    words = doc.split()
-    for word in words:
+    for word in doc:
         if(word not in terms):
             terms.append(word)
 
@@ -59,19 +58,16 @@ idfs = {}
 for term in terms:
     count = 0
     for doc in documents:
-        docTerms = doc.split()
-        if(term in docTerms):
+        if(term in doc):
             count += 1
     idf = math.log(NUM_DOCUMENTS / count, 10)
     idfs[term] = idf
 
 #Calculate tf-idf values by document
 for doc in documents:
-    docTerms = doc.split()
-    NUM_DOC_TERMS = len(docTerms)
     row = []
     for term in terms:
-        tf = docTerms.count(term) / NUM_DOC_TERMS
+        tf = doc.count(term) / len(doc)
         tf_idf = tf * idfs[term]
         row.append(tf_idf)
     docTermMatrix.append(row)
